@@ -18,8 +18,20 @@ function Droplet(x,y,c,s) {
 
   this.update = function() {
     if (this.active) {
-      this.x += ( randSign() * getRandomIntInclusive(0,3) );
-      this.y += ( randSign() * getRandomIntInclusive(0,3) );
+      this.x += ( randSign() * getRandomIntInclusive(0,this.size) );
+      this.y += ( randSign() * getRandomIntInclusive(0,this.size) );
+    }
+    if ((this.x - this.size) < 0) {
+      this.x += 50;
+    }
+    if ((this.x + this.size) > 1000) {
+      this.x -= 50;
+    }
+    if ((this.y - this.size) < 0) {
+      this.y += 50;
+    }
+    if ((this.y + this.size) > 1000) {
+      this.y -= 50;
     }
   };
 

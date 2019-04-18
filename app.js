@@ -7,7 +7,7 @@ var CANVAS,
     ctx,
     myGame;
 
-var defaultSimSpeed = 72;
+var defaultSimSpeed = 100;
 
 var myColors  = {
   black: 'rgba(0, 0, 0, 1)',

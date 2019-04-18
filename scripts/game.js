@@ -20,7 +20,7 @@ function Game(updateDur) {
     this.droplets = [];
     this.droplets.push(new Droplet(500,500,myColors.red,4));
     this.droplets[0].active = false;
-    for (let i = 0; i < 2000; i++) {
+    for (let i = 0; i < 3000; i++) {
       this.createRandDroplet();
     }
     this.lastUpdate = performance.now();
@@ -29,7 +29,7 @@ function Game(updateDur) {
   this.createRandDroplet = function() {
     let tmpDroplet = new Droplet( /*   x   */ getRandomIntInclusive(2,998),
                                   /*   y   */ getRandomIntInclusive(2,998),
-                                  /* color */ randBlue(),
+                                  /* color */ randColor("rgba"),
                                   /* size  */ 2
                                   );
     this.droplets.push(tmpDroplet);
