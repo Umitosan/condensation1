@@ -12,11 +12,24 @@ function Game(updateDur) {
   this.boxy = undefined;
   this.pausedTxt = undefined;
   this.mode = 'init';
+  this.droplets = undefined;
 
   this.init = function() {
     this.bg.src = 'bg1.png';
     this.boxy = new Box(20,20,myColors.red,20,1);
+    this.droplets = [];
+    for (let i = 0; i < 2000; i++) {
+      this.createRandDroplet();
+    }
     this.lastUpdate = performance.now();
+  };
+
+  this.createRandDroplet = function() {
+    let tmpDroplet = new Droplet( /*   x   */ getRandomIntInclusive(2,998),
+                                  /*   y   */ getRandomIntInclusive(2,998),
+                                  /* color */ randBlue()
+                                 );
+    this.droplets.push(tmpDroplet);
   };
 
   this.pauseIt = function() {
@@ -38,6 +51,9 @@ function Game(updateDur) {
 
   this.draw = function() {  // draw everything!
     this.boxy.draw();
+    for (let i = 0; i < this.droplets.length; i++) {
+      this.droplets[i].draw();
+    }
   }; // end draw
 
   this.update = function() {
@@ -52,6 +68,9 @@ function Game(updateDur) {
                 // }
                 // general update area
                 this.boxy.update();
+                for (let i = 0; i < this.droplets.length; i++) {
+                  this.droplets[i].update();
+                }
               }
               this.lastUpdate = performance.now();
             } // end if
