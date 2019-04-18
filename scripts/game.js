@@ -18,6 +18,8 @@ function Game(updateDur) {
     this.bg.src = 'bg1.png';
     this.boxy = new Box(20,20,myColors.red,20,1);
     this.droplets = [];
+    this.droplets.push(new Droplet(500,500,myColors.red,4));
+    this.droplets[0].active = false;
     for (let i = 0; i < 2000; i++) {
       this.createRandDroplet();
     }
@@ -27,8 +29,9 @@ function Game(updateDur) {
   this.createRandDroplet = function() {
     let tmpDroplet = new Droplet( /*   x   */ getRandomIntInclusive(2,998),
                                   /*   y   */ getRandomIntInclusive(2,998),
-                                  /* color */ randBlue()
-                                 );
+                                  /* color */ randBlue(),
+                                  /* size  */ 2
+                                  );
     this.droplets.push(tmpDroplet);
   };
 
@@ -44,13 +47,30 @@ function Game(updateDur) {
     this.timeGap = 0;
   };
 
+  this.checkFreezeDroplet = function() {
+    for (let i = 0; i < this.droplets.length; i++) {
+      if (this.droplets[i].active) {
+        for (let j = 0; j < this.droplets.length; j++) {
+          if (this.droplets[j].active === false) {
+            if (Math.abs(this.droplets[i].x - this.droplets[j].x) <= this.droplets[j].size) {
+              if (Math.abs(this.droplets[i].y - this.droplets[j].y) <= this.droplets[j].size) {
+                this.droplets[i].active = false;
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+
   this.drawBG = function() { // display background over canvas
     ctx.imageSmoothingEnabled = false;  // turns off AntiAliasing
     ctx.drawImage(this.bg,0,0,CANVAS.width,CANVAS.height);
   };
 
   this.draw = function() {  // draw everything!
-    this.boxy.draw();
+    // this.boxy.draw();
+    ctx.fillStyle = myColors.red;
     for (let i = 0; i < this.droplets.length; i++) {
       this.droplets[i].draw();
     }
@@ -67,10 +87,11 @@ function Game(updateDur) {
                 //   console.log('timesToUpdate = ', timesToUpdate);
                 // }
                 // general update area
-                this.boxy.update();
+                // this.boxy.update();
                 for (let i = 0; i < this.droplets.length; i++) {
                   this.droplets[i].update();
                 }
+                this.checkFreezeDroplet();
               }
               this.lastUpdate = performance.now();
             } // end if
